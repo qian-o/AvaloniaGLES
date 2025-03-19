@@ -68,11 +68,18 @@ internal static unsafe class ModelFactory
         {
             vertices[i].Position = (*&mesh->MVertices[i]).ToGeneric();
             vertices[i].Normal = (*&mesh->MNormals[i]).ToGeneric();
-            vertices[i].Color = (*&mesh->MColors[(int)i][0]).ToGeneric();
 
-            Vector3D<float> texCoord = (*&mesh->MTextureCoords[(int)i][0]).ToGeneric();
+            if (mesh->MColors[0] != null)
+            {
+                vertices[i].Color = (*&mesh->MColors[0][i]).ToGeneric();
+            }
 
-            vertices[i].TexCoord = new(texCoord.X, texCoord.Y);
+            if (mesh->MTextureCoords[0] != null)
+            {
+                Vector3D<float> texCoord = (*&mesh->MTextureCoords[0][i]).ToGeneric();
+
+                vertices[i].TexCoord = new(texCoord.X, texCoord.Y);
+            }
         }
 
         for (uint i = 0; i < mesh->MNumFaces; i++)

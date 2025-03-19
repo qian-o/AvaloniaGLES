@@ -1,4 +1,5 @@
-﻿using Silk.NET.OpenGLES;
+﻿using System;
+using Silk.NET.OpenGLES;
 
 namespace AvaloniaGLES.Graphics;
 
@@ -10,6 +11,15 @@ internal class Shader : GraphicObject
 
         GL.ShaderSource(Handle, source);
         GL.CompileShader(Handle);
+
+        string error = GL.GetShaderInfoLog(Handle);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            GL.DeleteShader(Handle);
+
+            throw new Exception($"{shaderType}: {error}");
+        }
     }
 
     public uint Handle { get; }

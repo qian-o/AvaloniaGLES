@@ -8,6 +8,14 @@ internal class Model(GL gl, string name, Mesh[] meshes) : GraphicObject(gl)
 
     public Mesh[] Meshes { get; } = meshes;
 
+    public void VertexAttributePointer(uint index, int size, string fieldName)
+    {
+        foreach (Mesh mesh in Meshes)
+        {
+            mesh.VertexAttributePointer(index, size, fieldName);
+        }
+    }
+
     public void Draw()
     {
         foreach (Mesh mesh in Meshes)

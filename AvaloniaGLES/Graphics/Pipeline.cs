@@ -1,4 +1,5 @@
-﻿using Silk.NET.Maths;
+﻿using System;
+using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
 
 namespace AvaloniaGLES.Graphics;
@@ -12,6 +13,15 @@ internal unsafe class Pipeline : GraphicObject
         GL.AttachShader(Handle, vs.Handle);
         GL.AttachShader(Handle, fs.Handle);
         GL.LinkProgram(Handle);
+
+        string error = GL.GetProgramInfoLog(Handle);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            GL.DeleteProgram(Handle);
+
+            throw new Exception($"Link: {error}");
+        }
     }
 
     public uint Handle { get; }
