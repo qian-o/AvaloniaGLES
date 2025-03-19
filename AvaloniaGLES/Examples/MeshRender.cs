@@ -10,6 +10,8 @@ namespace AvaloniaGLES.Examples;
 
 internal class MeshRender : IExample
 {
+    private Vector2D<int> size = Vector2D<int>.Zero;
+
     private Model model = null!;
     private Pipeline pipeline = null!;
 
@@ -42,8 +44,8 @@ internal class MeshRender : IExample
         model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_TexCoord"), 2, nameof(Vertex.TexCoord));
 
         pipeline.SetUniform("Model", Matrix4X4<float>.Identity);
-        pipeline.SetUniform("View", Matrix4X4<float>.Identity);
-        pipeline.SetUniform("Projection", Matrix4X4<float>.Identity);
+        pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 2.1f, 0.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
+        pipeline.SetUniform("Projection", Matrix4X4.CreatePerspectiveFieldOfView(MathF.PI / 4, (float)size.X / size.Y, 0.1f, 1000.0f));
 
         model.Draw();
 
@@ -56,5 +58,6 @@ internal class MeshRender : IExample
 
     public void OnResize(int width, int height)
     {
+        size = new Vector2D<int>(width, height);
     }
 }

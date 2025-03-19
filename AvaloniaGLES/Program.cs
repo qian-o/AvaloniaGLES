@@ -9,7 +9,7 @@ namespace AvaloniaGLES;
 
 internal class Program
 {
-    private static readonly bool Debug = true;
+    private static readonly bool Debug = false;
 
     [STAThread]
     public static void Main(string[] args)
@@ -29,11 +29,17 @@ internal class Program
             GL gl = window.CreateOpenGLES();
 
             example.OnLoad(gl);
+            example.OnResize(window.Size.X, window.Size.Y);
 
             window.Closing += () => example.OnUnload(gl);
             window.Update += (deltaSeconds) => example.OnUpdate(gl, deltaSeconds);
             window.Render += (deltaSeconds) => example.OnRender(gl, deltaSeconds);
-            window.Resize += (size) => example.OnResize(size.X, size.Y);
+            window.Resize += (size) =>
+            {
+                gl.Viewport(0, 0, (uint)size.X, (uint)size.Y);
+
+                example.OnResize(size.X, size.Y);
+            };
 
             window.Run();
         }

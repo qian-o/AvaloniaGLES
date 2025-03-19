@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Avalonia.Controls;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
@@ -56,6 +57,7 @@ internal class GLESControl : OpenGlControlBase
         if (GL is not null)
         {
             GL.BindFramebuffer(GLEnum.Framebuffer, (uint)fb);
+            GL.Viewport(0, 0, (uint)Bounds.Width, (uint)Bounds.Height);
 
             OnUpdate?.Invoke(GL, _stopwatch.Elapsed.TotalSeconds);
 
@@ -63,5 +65,12 @@ internal class GLESControl : OpenGlControlBase
         }
 
         Dispatcher.UIThread.Post(RequestNextFrameRendering, DispatcherPriority.Render);
+    }
+
+    protected override void OnSizeChanged(SizeChangedEventArgs e)
+    {
+        base.OnSizeChanged(e);
+
+        OnResize?.Invoke((int)Bounds.Width, (int)Bounds.Height);
     }
 }
