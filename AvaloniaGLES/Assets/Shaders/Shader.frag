@@ -8,5 +8,5 @@ out vec4 Out_Color;
 
 void main()
 {
-    Out_Color = vec4(TexCoord, 1.0, 1.0);
+    Out_Color = vec4(TexCoord, 0.0, 1.0);
 }

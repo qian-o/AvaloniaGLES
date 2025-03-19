@@ -17,7 +17,12 @@ internal class MeshRender : IExample
 
     public void OnLoad(GL gl)
     {
-        model = ModelFactory.Load(gl, Path.Combine(AppContext.BaseDirectory, "Assets", "Models", "Sponza", "glTF", "Sponza.gltf"));
+        model = ModelFactory.Load(gl, Path.Combine(AppContext.BaseDirectory,
+                                                   "Assets",
+                                                   "Models",
+                                                   "Sponza",
+                                                   "glTF",
+                                                   "Sponza.gltf"));
 
         using Shader vs = new(gl, ShaderType.VertexShader, File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Assets", "Shaders", "Shader.vert")));
         using Shader fs = new(gl, ShaderType.FragmentShader, File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Assets", "Shaders", "Shader.frag")));
