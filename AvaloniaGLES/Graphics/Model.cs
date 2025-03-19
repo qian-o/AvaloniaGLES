@@ -1,18 +1,12 @@
-﻿namespace AvaloniaGLES.Graphics;
+﻿using Silk.NET.OpenGLES;
 
-internal class Model(string name, Mesh[] meshes)
+namespace AvaloniaGLES.Graphics;
+
+internal class Model(GL gl, string name, Mesh[] meshes) : GraphicObject(gl)
 {
     public string Name { get; } = name;
 
     public Mesh[] Meshes { get; } = meshes;
-
-    public void Init()
-    {
-        foreach (Mesh mesh in Meshes)
-        {
-            mesh.Init();
-        }
-    }
 
     public void Draw()
     {
@@ -22,11 +16,11 @@ internal class Model(string name, Mesh[] meshes)
         }
     }
 
-    public void Destroy()
+    protected override void Destroy()
     {
         foreach (Mesh mesh in Meshes)
         {
-            mesh.Destroy();
+            mesh.Dispose();
         }
     }
 }

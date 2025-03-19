@@ -3,58 +3,56 @@ using Silk.NET.OpenGLES;
 
 namespace AvaloniaGLES.Graphics;
 
-internal unsafe class Mesh(GL gl, Vertex[] vertices, uint[] indices)
+internal unsafe class Mesh : GraphicObject
 {
-    private uint _vao;
-    private uint _vbo;
-    private uint _ebo;
+    private readonly uint vao;
+    private readonly uint vbo;
+    private readonly uint ebo;
+    private readonly uint count;
 
-    public Vertex[] Vertices { get; } = vertices;
-
-    public uint[] Indices { get; } = indices;
-
-    public void Init()
+    public Mesh(GL gl, Vertex[] vertices, uint[] indices) : base(gl)
     {
-        _vao = gl.GenVertexArray();
-        _vbo = gl.GenBuffer();
-        _ebo = gl.GenBuffer();
+        vao = GL.GenVertexArray();
+        vbo = GL.GenBuffer();
+        ebo = GL.GenBuffer();
+        count = (uint)indices.Length;
 
-        gl.BindVertexArray(_vao);
+        GL.BindVertexArray(vao);
 
-        gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
-        gl.BufferData<Vertex>(GLEnum.ArrayBuffer, (uint)(Vertices.Length * sizeof(Vertex)), Vertices, GLEnum.StaticDraw);
+        GL.BindBuffer(GLEnum.ArrayBuffer, vbo);
+        GL.BufferData<Vertex>(GLEnum.ArrayBuffer, (uint)(vertices.Length * sizeof(Vertex)), vertices, GLEnum.StaticDraw);
 
-        gl.BindBuffer(GLEnum.ElementArrayBuffer, _ebo);
-        gl.BufferData<uint>(GLEnum.ElementArrayBuffer, (uint)(Indices.Length * sizeof(uint)), Indices, GLEnum.StaticDraw);
+        GL.BindBuffer(GLEnum.ElementArrayBuffer, ebo);
+        GL.BufferData<uint>(GLEnum.ElementArrayBuffer, (uint)(indices.Length * sizeof(uint)), indices, GLEnum.StaticDraw);
 
-        gl.BindVertexArray(0);
+        GL.BindVertexArray(0);
     }
 
     public void VertexAttributePointer(uint index, int size, string fieldName)
     {
-        gl.BindVertexArray(_vao);
+        GL.BindVertexArray(vao);
 
-        gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+        GL.BindBuffer(GLEnum.ArrayBuffer, vbo);
 
-        gl.VertexAttribPointer(index, size, GLEnum.Float, false, (uint)sizeof(Vertex), (void*)Marshal.OffsetOf<Vertex>(fieldName));
-        gl.EnableVertexAttribArray(index);
+        GL.VertexAttribPointer(index, size, GLEnum.Float, false, (uint)sizeof(Vertex), (void*)Marshal.OffsetOf<Vertex>(fieldName));
+        GL.EnableVertexAttribArray(index);
 
-        gl.BindBuffer(GLEnum.ArrayBuffer, 0);
+        GL.BindBuffer(GLEnum.ArrayBuffer, 0);
 
-        gl.BindVertexArray(0);
+        GL.BindVertexArray(0);
     }
 
     public void Draw()
     {
-        gl.BindVertexArray(_vao);
-        gl.DrawElements(GLEnum.Triangles, (uint)Indices.Length, GLEnum.UnsignedInt, null);
-        gl.BindVertexArray(0);
+        GL.BindVertexArray(vao);
+        GL.DrawElements(GLEnum.Triangles, count, GLEnum.UnsignedInt, null);
+        GL.BindVertexArray(0);
     }
 
-    public void Destroy()
+    protected override void Destroy()
     {
-        gl.DeleteBuffer(_vbo);
-        gl.DeleteBuffer(_ebo);
-        gl.DeleteVertexArray(_vao);
+        GL.DeleteBuffer(vbo);
+        GL.DeleteBuffer(ebo);
+        GL.DeleteVertexArray(vao);
     }
 }
