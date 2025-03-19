@@ -1,9 +1,12 @@
-﻿using Silk.NET.OpenGLES;
+﻿using AvaloniaGLES.Graphics;
+using Silk.NET.OpenGLES;
 
 namespace AvaloniaGLES.Examples;
 
 internal class MeshRender : IExample
 {
+    private Model model = null!;
+
     public void OnLoad(GL gl)
     {
     }

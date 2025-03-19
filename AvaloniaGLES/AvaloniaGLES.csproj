@@ -22,4 +22,10 @@
         <PackageReference Include="Silk.NET.OpenGLES" Version="2.22.0" />
         <PackageReference Include="Silk.NET.Windowing.Sdl" Version="2.22.0" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Include="Assets\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>
