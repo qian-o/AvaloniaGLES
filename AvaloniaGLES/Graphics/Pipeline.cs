@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
 
@@ -6,6 +7,8 @@ namespace AvaloniaGLES.Graphics;
 
 internal unsafe class Pipeline : GraphicObject
 {
+    private readonly Dictionary<string, int> locations = [];
+
     public Pipeline(GL gl, Shader vs, Shader fs) : base(gl)
     {
         Handle = GL.CreateProgram();
@@ -33,12 +36,26 @@ internal unsafe class Pipeline : GraphicObject
 
     public int GetAttribLocation(string name)
     {
-        return GL.GetAttribLocation(Handle, name);
+        if (!locations.TryGetValue(name, out int location))
+        {
+            location = GL.GetAttribLocation(Handle, name);
+
+            locations[name] = location;
+        }
+
+        return location;
     }
 
     public int GetUniformLocation(string name)
     {
-        return GL.GetUniformLocation(Handle, name);
+        if (!locations.TryGetValue(name, out int location))
+        {
+            location = GL.GetUniformLocation(Handle, name);
+
+            locations[name] = location;
+        }
+
+        return location;
     }
 
     public void SetUniform(string name, int value)

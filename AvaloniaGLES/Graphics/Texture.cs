@@ -10,8 +10,8 @@ internal unsafe class Texture : GraphicObject
 
         GL.BindTexture(GLEnum.Texture2D, Handle);
 
-        GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GLEnum.Nearest);
-        GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GLEnum.Nearest);
+        GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GLEnum.LinearMipmapLinear);
+        GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GLEnum.LinearMipmapLinear);
         GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GLEnum.Repeat);
         GL.TexParameter(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GLEnum.Repeat);
 
@@ -38,6 +38,8 @@ internal unsafe class Texture : GraphicObject
                       format,
                       GLEnum.UnsignedByte,
                       data);
+
+        GL.GenerateMipmap(GLEnum.Texture2D);
 
         GL.BindTexture(GLEnum.Texture2D, 0);
     }
