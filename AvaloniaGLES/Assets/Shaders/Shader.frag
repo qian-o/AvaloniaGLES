@@ -12,7 +12,6 @@ uniform sampler2D BaseColorTexture;
 uniform sampler2D NormalTexture;
 uniform bool IsOpaque;
 uniform float AlphaCutoff;
-uniform bool DoubleSided;
 
 out vec4 Out_Color;
 

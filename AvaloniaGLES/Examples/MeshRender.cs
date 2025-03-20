@@ -80,7 +80,15 @@ internal unsafe class MeshRender : IExample
 
                 pipeline.SetUniform("IsOpaque", material.IsOpaque);
                 pipeline.SetUniform("AlphaCutoff", material.AlphaCutoff);
-                pipeline.SetUniform("DoubleSided", material.DoubleSided);
+
+                if (material.DoubleSided)
+                {
+                    gl.Disable(GLEnum.CullFace);
+                }
+                else
+                {
+                    gl.Enable(GLEnum.CullFace);
+                }
 
                 gl.DrawElements(GLEnum.Triangles,
                                 primitive.IndexCount,
