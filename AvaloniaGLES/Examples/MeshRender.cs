@@ -68,14 +68,26 @@ internal unsafe class MeshRender : IExample
                 {
                     gl.ActiveTexture(GLEnum.Texture0);
                     model.Textures[material.BaseColorTextureIndex].Bind();
+
+                    pipeline.SetUniform("HasBaseColorTexture", true);
                     pipeline.SetUniform("BaseColorTexture", 0);
+                }
+                else
+                {
+                    pipeline.SetUniform("HasBaseColorTexture", false);
                 }
 
                 if (material.NormalTextureIndex is not -1)
                 {
                     gl.ActiveTexture(GLEnum.Texture1);
                     model.Textures[material.NormalTextureIndex].Bind();
+
+                    pipeline.SetUniform("HasNormalTexture", true);
                     pipeline.SetUniform("BaseColorTexture", 0);
+                }
+                else
+                {
+                    pipeline.SetUniform("HasNormalTexture", false);
                 }
 
                 pipeline.SetUniform("IsOpaque", material.IsOpaque);

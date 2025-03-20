@@ -22,6 +22,7 @@ internal class Program
             windowOptions.Title = "AvaloniaGLES";
             windowOptions.Size = new Vector2D<int>(1280, 720);
             windowOptions.API = new GraphicsAPI(ContextAPI.OpenGLES, new APIVersion(3, 0));
+            windowOptions.VSync = false;
 
             IWindow window = Window.Create(windowOptions);
             window.Initialize();
