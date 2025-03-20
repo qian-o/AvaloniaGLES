@@ -25,7 +25,7 @@ internal class Texture : GraphicObject
         GL.BindTexture(GLEnum.Texture2D, Handle);
     }
 
-    public void SetData(int width, int height, GLEnum format, PixelType type, nint data)
+    public void SetData(int width, int height, GLEnum format, nint data)
     {
         GL.BindTexture(GLEnum.Texture2D, Handle);
 
