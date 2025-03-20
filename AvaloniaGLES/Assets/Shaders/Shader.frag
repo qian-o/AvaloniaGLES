@@ -2,11 +2,14 @@
 
 precision highp float;
 
+in vec3 Position;
+in vec3 Normal;
 in vec2 TexCoord;
+flat in int MaterialIndex;
 
 out vec4 Out_Color;
 
 void main()
 {
-    Out_Color = vec4(TexCoord, 0.0, 1.0);
+    Out_Color = vec4(Position, 1.0);
 }

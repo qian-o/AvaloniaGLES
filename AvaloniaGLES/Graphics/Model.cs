@@ -8,6 +8,7 @@ internal unsafe class Model : GraphicObject
     private readonly uint vao;
     private readonly uint vbo;
     private readonly uint ebo;
+    private readonly uint count;
 
     public Model(GL gl,
                  Vertex[] vertices,
@@ -20,6 +21,7 @@ internal unsafe class Model : GraphicObject
         vao = GL.GenVertexArray();
         vbo = GL.GenBuffer();
         ebo = GL.GenBuffer();
+        count = (uint)indices.Length;
 
         GL.BindVertexArray(vao);
 
@@ -45,13 +47,13 @@ internal unsafe class Model : GraphicObject
 
     public Material[] Materials { get; }
 
-    public void VertexAttributePointer(uint index, int size, string fieldName)
+    public void VertexAttributePointer(uint index, int size, GLEnum type, string fieldName)
     {
         GL.BindVertexArray(vao);
 
         GL.BindBuffer(GLEnum.ArrayBuffer, vbo);
 
-        GL.VertexAttribPointer(index, size, GLEnum.Float, false, (uint)sizeof(Vertex), (void*)Marshal.OffsetOf<Vertex>(fieldName));
+        GL.VertexAttribPointer(index, size, type, false, (uint)sizeof(Vertex), (void*)Marshal.OffsetOf<Vertex>(fieldName));
         GL.EnableVertexAttribArray(index);
 
         GL.BindBuffer(GLEnum.ArrayBuffer, 0);

@@ -38,18 +38,24 @@ internal class MeshRender : IExample
 
     public void OnRender(GL gl, double deltaSeconds)
     {
+        gl.Enable(GLEnum.DepthTest);
+        gl.Enable(GLEnum.CullFace);
+        gl.CullFace(GLEnum.Back);
+        gl.FrontFace(GLEnum.CW);
+
         gl.Clear((uint)GLEnum.ColorBufferBit | (uint)GLEnum.DepthBufferBit | (uint)GLEnum.StencilBufferBit);
         gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         pipeline.Bind();
 
-        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Position"), 3, nameof(Vertex.Position));
-        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Normal"), 3, nameof(Vertex.Normal));
-        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Color"), 4, nameof(Vertex.Color));
-        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_TexCoord"), 2, nameof(Vertex.TexCoord));
+        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Position"), 3, GLEnum.Float, nameof(Vertex.Position));
+        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Normal"), 3, GLEnum.Float, nameof(Vertex.Normal));
+        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_Color"), 3, GLEnum.Float, nameof(Vertex.Color));
+        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_TexCoord"), 2, GLEnum.Float, nameof(Vertex.TexCoord));
+        model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_MaterialIndex"), 1, GLEnum.Int, nameof(Vertex.MaterialIndex));
 
         pipeline.SetUniform("Model", Matrix4X4<float>.Identity);
-        pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 2.1f, 0.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
+        pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 0.1f, 2.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
         pipeline.SetUniform("Projection", Matrix4X4.CreatePerspectiveFieldOfView(MathF.PI / 4, (float)size.X / size.Y, 0.1f, 1000.0f));
 
         model.Draw();
