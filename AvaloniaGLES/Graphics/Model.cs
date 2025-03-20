@@ -8,7 +8,6 @@ internal unsafe class Model : GraphicObject
     private readonly uint vao;
     private readonly uint vbo;
     private readonly uint ebo;
-    private readonly uint count;
 
     public Model(GL gl,
                  Vertex[] vertices,
@@ -21,7 +20,6 @@ internal unsafe class Model : GraphicObject
         vao = GL.GenVertexArray();
         vbo = GL.GenBuffer();
         ebo = GL.GenBuffer();
-        count = (uint)indices.Length;
 
         GL.BindVertexArray(vao);
 

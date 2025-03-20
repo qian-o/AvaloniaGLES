@@ -55,7 +55,7 @@ internal class MeshRender : IExample
         model.VertexAttributePointer((uint)pipeline.GetAttribLocation("In_MaterialIndex"), 1, GLEnum.Int, nameof(Vertex.MaterialIndex));
 
         pipeline.SetUniform("Model", Matrix4X4<float>.Identity);
-        pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 0.1f, 2.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
+        pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 2.1f, 0.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
         pipeline.SetUniform("Projection", Matrix4X4.CreatePerspectiveFieldOfView(MathF.PI / 4, (float)size.X / size.Y, 0.1f, 1000.0f));
 
         model.Draw();
