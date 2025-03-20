@@ -55,6 +55,7 @@ internal class Program
         return AppBuilder.Configure<App>()
                          .UsePlatformDetect()
                          .WithInterFont()
+                         .With(new X11PlatformOptions() { RenderingMode = [ X11RenderingMode.Egl ] })
                          .LogToTrace();
     }
 }
