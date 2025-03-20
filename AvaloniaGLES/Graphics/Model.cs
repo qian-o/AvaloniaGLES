@@ -59,16 +59,9 @@ internal unsafe class Model : GraphicObject
         GL.BindVertexArray(0);
     }
 
-    public void Draw()
+    public void Bind()
     {
         GL.BindVertexArray(vao);
-
-        foreach (Mesh mesh in Meshes)
-        {
-            mesh.Draw();
-        }
-
-        GL.BindVertexArray(0);
     }
 
     protected override void Destroy()

@@ -1,17 +1,6 @@
-﻿using Silk.NET.OpenGLES;
+﻿namespace AvaloniaGLES.Graphics;
 
-namespace AvaloniaGLES.Graphics;
-
-internal unsafe struct Mesh(GL gl, Primitive[] primitives)
+internal struct Mesh(Primitive[] primitives)
 {
-    public readonly void Draw()
-    {
-        foreach (Primitive primitive in primitives)
-        {
-            gl.DrawElements(GLEnum.Triangles,
-                            primitive.IndexCount,
-                            GLEnum.UnsignedInt,
-                            (void*)(primitive.FirstIndex * sizeof(uint)));
-        }
-    }
+    public Primitive[] Primitives = primitives;
 }

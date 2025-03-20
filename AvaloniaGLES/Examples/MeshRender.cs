@@ -8,7 +8,7 @@ using Shader = AvaloniaGLES.Graphics.Shader;
 
 namespace AvaloniaGLES.Examples;
 
-internal class MeshRender : IExample
+internal unsafe class MeshRender : IExample
 {
     private Vector2D<int> size = Vector2D<int>.Zero;
 
@@ -39,9 +39,6 @@ internal class MeshRender : IExample
     public void OnRender(GL gl, double deltaSeconds)
     {
         gl.Enable(GLEnum.DepthTest);
-        gl.Enable(GLEnum.CullFace);
-        gl.CullFace(GLEnum.Back);
-        gl.FrontFace(GLEnum.CW);
 
         gl.Clear((uint)GLEnum.ColorBufferBit | (uint)GLEnum.DepthBufferBit | (uint)GLEnum.StencilBufferBit);
         gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -56,6 +53,41 @@ internal class MeshRender : IExample
         pipeline.SetUniform("Model", Matrix4X4<float>.Identity);
         pipeline.SetUniform("View", Matrix4X4.CreateLookAt(new Vector3D<float>(7.8f, 2.1f, 0.0f), Vector3D<float>.Zero, Vector3D<float>.UnitY));
         pipeline.SetUniform("Projection", Matrix4X4.CreatePerspectiveFieldOfView(MathF.PI / 4, (float)size.X / size.Y, 0.1f, 1000.0f));
+
+        model.Bind();
+
+        foreach (Mesh mesh in model.Meshes)
+        {
+            foreach (Primitive primitive in mesh.Primitives)
+            {
+                Material material = model.Materials[primitive.MaterialIndex];
+
+                pipeline.SetUniform("BaseColorFactor", material.BaseColorFactor);
+
+                if (material.BaseColorTextureIndex is not -1)
+                {
+                    gl.ActiveTexture(GLEnum.Texture0);
+                    model.Textures[material.BaseColorTextureIndex].Bind();
+                    pipeline.SetUniform("BaseColorTexture", 0);
+                }
+
+                if (material.NormalTextureIndex is not -1)
+                {
+                    gl.ActiveTexture(GLEnum.Texture1);
+                    model.Textures[material.NormalTextureIndex].Bind();
+                    pipeline.SetUniform("BaseColorTexture", 0);
+                }
+
+                pipeline.SetUniform("IsOpaque", material.IsOpaque);
+                pipeline.SetUniform("AlphaCutoff", material.AlphaCutoff);
+                pipeline.SetUniform("DoubleSided", material.DoubleSided);
+
+                gl.DrawElements(GLEnum.Triangles,
+                                primitive.IndexCount,
+                                GLEnum.UnsignedInt,
+                                (void*)(primitive.FirstIndex * sizeof(uint)));
+            }
+        }
     }
 
     public void OnUpdate(GL gl, double deltaSeconds)

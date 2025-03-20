@@ -51,6 +51,11 @@ internal unsafe class Pipeline : GraphicObject
         GL.Uniform1(GetUniformLocation(name), value);
     }
 
+    public void SetUniform(string name, bool value)
+    {
+        GL.Uniform1(GetUniformLocation(name), value ? 1 : 0);
+    }
+
     public void SetUniform(string name, Vector2D<float> value)
     {
         GL.Uniform2(GetUniformLocation(name), value.X, value.Y);

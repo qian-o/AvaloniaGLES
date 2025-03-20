@@ -62,8 +62,8 @@ internal static unsafe class ModelFactory
         foreach (GltfMaterial gltfMaterial in root.LogicalMaterials)
         {
             Vector4D<float> baseColorFactor = Vector4D<float>.One;
-            uint baseColorTextureIndex = 0;
-            uint normalTextureIndex = 0;
+            int baseColorTextureIndex = -1;
+            int normalTextureIndex = -1;
 
             if (gltfMaterial.FindChannel(KnownChannel.BaseColor.ToString()) is MaterialChannel baseColor)
             {
@@ -71,7 +71,7 @@ internal static unsafe class ModelFactory
 
                 if (baseColor.Texture != null)
                 {
-                    baseColorTextureIndex = (uint)baseColor.Texture.LogicalIndex;
+                    baseColorTextureIndex = baseColor.Texture.LogicalIndex;
                 }
             }
 
@@ -79,7 +79,7 @@ internal static unsafe class ModelFactory
             {
                 if (normal.Texture != null)
                 {
-                    normalTextureIndex = (uint)normal.Texture.LogicalIndex;
+                    normalTextureIndex = normal.Texture.LogicalIndex;
                 }
             }
 
@@ -173,10 +173,10 @@ internal static unsafe class ModelFactory
                     }
                 }
 
-                primitives.Add(new Primitive(firsetIndex, indexCount));
+                primitives.Add(new Primitive(firsetIndex, indexCount, (uint)primitive.Material.LogicalIndex));
             }
 
-            meshes.Add(new Mesh(gl, [.. primitives]));
+            meshes.Add(new Mesh([.. primitives]));
         }
 
         foreach (Node item in node.VisualChildren)
