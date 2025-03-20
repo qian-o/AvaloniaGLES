@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using AvaloniaGLES.Graphics;
+using SharpGLTF.Materials;
 using SharpGLTF.Memory;
 using SharpGLTF.Schema2;
 using SharpGLTF.Validation;
 using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
+using StbImageSharp;
+using AlphaMode = SharpGLTF.Schema2.AlphaMode;
+using GltfMaterial = SharpGLTF.Schema2.Material;
+using GltfTexture = SharpGLTF.Schema2.Texture;
 using Material = AvaloniaGLES.Graphics.Material;
 using Mesh = AvaloniaGLES.Graphics.Mesh;
 using Texture = AvaloniaGLES.Graphics.Texture;
@@ -27,6 +33,62 @@ internal static unsafe class ModelFactory
         foreach (Node node in root.LogicalNodes)
         {
             ProcessNode(gl, node, vertices, indices, meshes);
+        }
+
+        foreach (GltfTexture gltfTexture in root.LogicalTextures)
+        {
+            using Stream stream = gltfTexture.PrimaryImage.Content.Open();
+
+            if (ImageInfo.FromStream(stream) is not ImageInfo imageInfo)
+            {
+                continue;
+            }
+
+            int width = imageInfo.Width;
+            int height = imageInfo.Height;
+
+            ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+
+            Texture texture = new(gl);
+
+            fixed (byte* data = image.Data)
+            {
+                texture.SetData(width, height, GLEnum.Rgba8, GLEnum.Rgba, data);
+            }
+
+            textures.Add(texture);
+        }
+
+        foreach (GltfMaterial gltfMaterial in root.LogicalMaterials)
+        {
+            Vector4D<float> baseColorFactor = Vector4D<float>.One;
+            uint baseColorTextureIndex = 0;
+            uint normalTextureIndex = 0;
+
+            if (gltfMaterial.FindChannel(KnownChannel.BaseColor.ToString()) is MaterialChannel baseColor)
+            {
+                baseColorFactor = baseColor.Color.ToGeneric();
+
+                if (baseColor.Texture != null)
+                {
+                    baseColorTextureIndex = (uint)baseColor.Texture.LogicalIndex;
+                }
+            }
+
+            if (gltfMaterial.FindChannel(KnownChannel.Normal.ToString()) is MaterialChannel normal)
+            {
+                if (normal.Texture != null)
+                {
+                    normalTextureIndex = (uint)normal.Texture.LogicalIndex;
+                }
+            }
+
+            materials.Add(new(baseColorFactor,
+                              baseColorTextureIndex,
+                              normalTextureIndex,
+                              gltfMaterial.Alpha is AlphaMode.OPAQUE,
+                              gltfMaterial.AlphaCutoff,
+                              gltfMaterial.DoubleSided));
         }
 
         return new Model(gl,

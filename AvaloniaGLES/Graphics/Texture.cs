@@ -2,7 +2,7 @@
 
 namespace AvaloniaGLES.Graphics;
 
-internal class Texture : GraphicObject
+internal unsafe class Texture : GraphicObject
 {
     public Texture(GL gl) : base(gl)
     {
@@ -25,19 +25,19 @@ internal class Texture : GraphicObject
         GL.BindTexture(GLEnum.Texture2D, Handle);
     }
 
-    public void SetData(int width, int height, GLEnum format, nint data)
+    public void SetData(int width, int height, GLEnum internalformat, GLEnum format, byte* data)
     {
         GL.BindTexture(GLEnum.Texture2D, Handle);
 
         GL.TexImage2D(GLEnum.Texture2D,
                       0,
-                      (int)format,
+                      (int)internalformat,
                       (uint)width,
                       (uint)height,
                       0,
                       format,
                       GLEnum.UnsignedByte,
-                      in data);
+                      data);
 
         GL.BindTexture(GLEnum.Texture2D, 0);
     }

@@ -5,7 +5,7 @@ precision highp float;
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
-flat in int MaterialIndex;
+flat in uint MaterialIndex;
 
 out vec4 Out_Color;
 

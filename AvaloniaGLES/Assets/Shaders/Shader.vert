@@ -4,12 +4,12 @@ in vec3 In_Position;
 in vec3 In_Normal;
 in vec3 In_Color;
 in vec2 In_TexCoord;
-in int In_MaterialIndex;
+in uint In_MaterialIndex;
 
 out vec3 Position;
 out vec3 Normal;
 out vec2 TexCoord;
-flat out int MaterialIndex;
+flat out uint MaterialIndex;
 
 uniform mat4 Model;
 uniform mat4 View;

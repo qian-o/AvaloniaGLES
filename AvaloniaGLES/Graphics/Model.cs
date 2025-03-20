@@ -76,5 +76,10 @@ internal unsafe class Model : GraphicObject
         GL.DeleteBuffer(vbo);
         GL.DeleteBuffer(ebo);
         GL.DeleteVertexArray(vao);
+
+        foreach (Texture texture in Textures)
+        {
+            texture.Dispose();
+        }
     }
 }
