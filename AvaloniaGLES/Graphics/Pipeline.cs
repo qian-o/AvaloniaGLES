@@ -31,11 +31,6 @@ internal unsafe class Pipeline : GraphicObject
         GL.UseProgram(Handle);
     }
 
-    public void Unbind()
-    {
-        GL.UseProgram(0);
-    }
-
     public int GetAttribLocation(string name)
     {
         return GL.GetAttribLocation(Handle, name);

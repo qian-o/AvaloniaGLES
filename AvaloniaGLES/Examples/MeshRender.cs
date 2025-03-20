@@ -53,8 +53,6 @@ internal class MeshRender : IExample
         pipeline.SetUniform("Projection", Matrix4X4.CreatePerspectiveFieldOfView(MathF.PI / 4, (float)size.X / size.Y, 0.1f, 1000.0f));
 
         model.Draw();
-
-        pipeline.Unbind();
     }
 
     public void OnUpdate(GL gl, double deltaSeconds)

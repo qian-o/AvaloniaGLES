@@ -10,7 +10,7 @@ internal unsafe class Mesh : GraphicObject
     private readonly uint ebo;
     private readonly uint count;
 
-    public Mesh(GL gl, Vertex[] vertices, uint[] indices) : base(gl)
+    public Mesh(GL gl, Vertex[] vertices, uint[] indices, uint materialIndex) : base(gl)
     {
         vao = GL.GenVertexArray();
         vbo = GL.GenBuffer();
@@ -26,7 +26,11 @@ internal unsafe class Mesh : GraphicObject
         GL.BufferData<uint>(GLEnum.ElementArrayBuffer, (uint)(indices.Length * sizeof(uint)), indices, GLEnum.StaticDraw);
 
         GL.BindVertexArray(0);
+
+        MaterialIndex = materialIndex;
     }
+
+    public uint MaterialIndex { get; }
 
     public void VertexAttributePointer(uint index, int size, string fieldName)
     {

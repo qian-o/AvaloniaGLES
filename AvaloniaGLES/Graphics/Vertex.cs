@@ -2,10 +2,10 @@
 
 namespace AvaloniaGLES.Graphics;
 
-internal struct Vertex(Vector3D<float> position = default,
-                       Vector3D<float> normal = default,
-                       Vector4D<float> color = default,
-                       Vector2D<float> texCoord = default)
+internal struct Vertex(Vector3D<float> position,
+                       Vector3D<float> normal,
+                       Vector4D<float> color,
+                       Vector2D<float> texCoord)
 {
     public Vector3D<float> Position = position;
 
