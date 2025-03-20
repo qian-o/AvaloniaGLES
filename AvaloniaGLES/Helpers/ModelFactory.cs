@@ -149,8 +149,6 @@ internal static unsafe class ModelFactory
                         Vector3D<float> color = colorBuffer is not null ? colorBuffer[(int)i].ToGeneric() : Vector3D<float>.One;
                         Vector2D<float> texCoord = texCoordBuffer is not null ? texCoordBuffer[(int)i].ToGeneric() : Vector2D<float>.Zero;
 
-                        position = Vector3D.Transform(position, node.WorldMatrix.ToGeneric());
-
                         vertices.Add(new Vertex(position,
                                                 normal,
                                                 color,
@@ -176,7 +174,7 @@ internal static unsafe class ModelFactory
                 primitives.Add(new Primitive(firsetIndex, indexCount, (uint)primitive.Material.LogicalIndex));
             }
 
-            meshes.Add(new Mesh([.. primitives]));
+            meshes.Add(new Mesh(node.WorldMatrix.ToGeneric(), [.. primitives]));
         }
 
         foreach (Node item in node.VisualChildren)

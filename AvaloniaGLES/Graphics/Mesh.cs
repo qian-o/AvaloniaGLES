@@ -1,6 +1,10 @@
-﻿namespace AvaloniaGLES.Graphics;
+﻿using Silk.NET.Maths;
 
-internal struct Mesh(Primitive[] primitives)
+namespace AvaloniaGLES.Graphics;
+
+internal struct Mesh(Matrix4X4<float> world, Primitive[] primitives)
 {
+    public Matrix4X4<float> World = world;
+
     public Primitive[] Primitives = primitives;
 }
