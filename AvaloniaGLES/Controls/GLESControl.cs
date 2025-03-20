@@ -56,8 +56,11 @@ internal class GLESControl : OpenGlControlBase
     {
         if (GL is not null)
         {
+            RenderSize(out double width, out double height);
+
             GL.BindFramebuffer(GLEnum.Framebuffer, (uint)fb);
-            GL.Viewport(0, 0, (uint)Bounds.Width, (uint)Bounds.Height);
+
+            GL.Viewport(0, 0, (uint)width, (uint)height);
 
             OnUpdate?.Invoke(GL, _stopwatch.Elapsed.TotalSeconds);
 
@@ -71,6 +74,20 @@ internal class GLESControl : OpenGlControlBase
     {
         base.OnSizeChanged(e);
 
-        OnResize?.Invoke((int)Bounds.Width, (int)Bounds.Height);
+        RenderSize(out double width, out double height);
+
+        OnResize?.Invoke((int)width, (int)height);
+    }
+
+    private void RenderSize(out double width, out double height)
+    {
+        width = Bounds.Width;
+        height = Bounds.Height;
+
+        if (VisualRoot is not null)
+        {
+            width *= VisualRoot.RenderScaling;
+            height *= VisualRoot.RenderScaling;
+        }
     }
 }

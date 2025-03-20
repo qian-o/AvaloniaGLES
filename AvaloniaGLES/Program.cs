@@ -9,7 +9,7 @@ namespace AvaloniaGLES;
 
 internal class Program
 {
-    private static readonly bool Debug = true;
+    private static readonly bool Debug = false;
 
     [STAThread]
     public static void Main(string[] args)
