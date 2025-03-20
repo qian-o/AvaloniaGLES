@@ -4,12 +4,11 @@ in vec3 In_Position;
 in vec3 In_Normal;
 in vec3 In_Color;
 in vec2 In_TexCoord;
-in uint In_MaterialIndex;
 
 out vec3 Position;
 out vec3 Normal;
+out vec3 Color;
 out vec2 TexCoord;
-flat out uint MaterialIndex;
 
 uniform mat4 Model;
 uniform mat4 View;
@@ -21,6 +20,6 @@ void main()
 
     Position = (Model * vec4(In_Position, 1.0)).xyz;
     Normal = In_Normal;
+    Color = In_Color;
     TexCoord = In_TexCoord;
-    MaterialIndex = In_MaterialIndex;
 }

@@ -154,8 +154,7 @@ internal static unsafe class ModelFactory
                         vertices.Add(new Vertex(position,
                                                 normal,
                                                 color,
-                                                texCoord,
-                                                primitive.Material.LogicalIndex));
+                                                texCoord));
                     }
                 }
 

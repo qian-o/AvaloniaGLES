@@ -5,8 +5,7 @@ namespace AvaloniaGLES.Graphics;
 internal struct Vertex(Vector3D<float> position,
                        Vector3D<float> normal,
                        Vector3D<float> color,
-                       Vector2D<float> texCoord,
-                       int materialIndex)
+                       Vector2D<float> texCoord)
 {
     public Vector3D<float> Position = position;
 
@@ -15,6 +14,4 @@ internal struct Vertex(Vector3D<float> position,
     public Vector3D<float> Color = color;
 
     public Vector2D<float> TexCoord = texCoord;
-
-    public int MaterialIndex = materialIndex;
 }
